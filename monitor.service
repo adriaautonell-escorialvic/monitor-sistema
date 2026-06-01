@@ -1,0 +1,20 @@
+[Unit]
+Description=Monitor del Sistema Linux (CPU i RAM)
+After=network.target
+
+[Service]
+User=adria
+WorkingDirectory=/home/adria/servei
+
+# Entorn virtual creat per install.sh
+ExecStart=/home/adria/servei/venv/bin/python app.py
+
+# Reinici automàtic si el procés cau
+Restart=always
+RestartSec=5
+
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

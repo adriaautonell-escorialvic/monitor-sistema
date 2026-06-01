@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitor del Sistema</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="monitor.css" />
+</head>
+<body>
+
+<!-- ── Capçalera ──────────────────────────────────────────────────────── -->
+<header>
+  <h1>
+    <span class="material-symbols-outlined">monitoring</span>
+    Monitor del <span>Sistema</span>
+  </h1>
+  <div class="header-actions">
+    <div id="status-badge">
+      <div id="dot"></div>
+      <span id="last-update">Connectant…</span>
+    </div>
+    <button class="icon-btn" id="theme-btn" title="Canviar tema">
+      <span class="material-symbols-outlined" id="theme-icon">light_mode</span>
+      <span id="theme-text">Mode clar</span>
+    </button>
+    <button class="icon-btn" id="settings-btn" title="Configuració">
+      <span class="material-symbols-outlined">tune</span>
+      <span id="settings-text">Configuració</span>
+    </button>
+  </div>
+</header>
+
+<!-- ── Estat en temps real ────────────────────────────────────────────── -->
+<p class="section-title">
+  <span class="material-symbols-outlined">speed</span>
+  Estat en temps real
+</p>
+<div class="grid" id="grid-stats">
+
+  <div class="card card-wrap" data-card="cpu">
+    <div class="card-eye-overlay">
+      <span class="material-symbols-outlined eye-icon">visibility</span>
+    </div>
+    <div class="card-label">
+      <span class="material-symbols-outlined">memory</span>
+      Ús de CPU
+    </div>
+    <div class="card-value" id="cpu-pct">–</div>
+    <div class="card-sub" id="cpu-cores">–</div>
+    <div class="bar-wrap"><div class="bar-fill" id="cpu-bar" style="width:0%"></div></div>
+  </div>
+
+  <div class="card card-wrap" data-card="ram">
+    <div class="card-eye-overlay">
+      <span class="material-symbols-outlined eye-icon">visibility</span>
+    </div>
+    <div class="card-label">
+      <span class="material-symbols-outlined">memory_alt</span>
+      Ús de RAM
+    </div>
+    <div class="card-value" id="ram-pct">–</div>
+    <div class="card-sub" id="ram-detail">–</div>
+    <div class="bar-wrap"><div class="bar-fill" id="ram-bar" style="width:0%"></div></div>
+  </div>
+
+  <div class="card card-wrap" data-card="disk">
+    <div class="card-eye-overlay">
+      <span class="material-symbols-outlined eye-icon">visibility</span>
+    </div>
+    <div class="card-label">
+      <span class="material-symbols-outlined">hard_drive</span>
+      Disc ( / )
+    </div>
+    <div class="card-value" id="disk-pct">–</div>
+    <div class="card-sub" id="disk-detail">–</div>
+    <div class="bar-wrap"><div class="bar-fill" id="disk-bar" style="width:0%"></div></div>
+  </div>
+
+  <div class="card card-wrap" data-card="uptime">
+    <div class="card-eye-overlay">
+      <span class="material-symbols-outlined eye-icon">visibility</span>
+    </div>
+    <div class="card-label">
+      <span class="material-symbols-outlined">schedule</span>
+      Temps actiu (Uptime)
+    </div>
+    <div class="card-value" style="font-size:1.5rem" id="uptime">–</div>
+    <div class="card-sub" id="load-avg">–</div>
+  </div>
+
+</div>
+
+<!-- ── Informació del sistema ─────────────────────────────────────────── -->
+<p class="section-title">
+  <span class="material-symbols-outlined">info</span>
+  Informació del sistema
+</p>
+<div class="sysinfo-grid">
+
+  <div class="sysinfo-card card-wrap" data-card="si-os">
+    <div class="card-eye-overlay">
+      <span class="material-symbols-outlined eye-icon">visibility</span>
+    </div>
+    <h3><span class="material-symbols-outlined">computer</span> Sistema operatiu</h3>
+    <div class="info-row">
+      <span class="info-key"><span class="material-symbols-outlined">dns</span>Hostname</span>
+      <span class="info-val" id="si-hostname">–</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key"><span class="material-symbols-outlined">deployed_code</span>Distribució</span>
+      <span class="info-val" id="si-distro">–</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key"><span class="material-symbols-outlined">developer_board</span>Kernel</span>
+      <span class="info-val" id="si-kernel">–</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key"><span class="material-symbols-outlined">architecture</span>Arquitectura</span>
+      <span class="info-val" id="si-arch">–</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key"><span class="material-symbols-outlined">lan</span>Adreça IP</span>
+      <span class="info-val" id="si-ip">–</span>
+    </div>
+  </div>
+
+  <div class="sysinfo-card card-wrap" data-card="si-cpu">
+    <div class="card-eye-overlay">
+      <span class="material-symbols-outlined eye-icon">visibility</span>
+    </div>
+    <h3><span class="material-symbols-outlined">memory</span> Processador</h3>
+    <div class="info-row">
+      <span class="info-key"><span class="material-symbols-outlined">chip</span>Model</span>
+      <span class="info-val" id="si-cpu-model">–</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key"><span class="material-symbols-outlined">blur_on</span>Nuclis físics</span>
+      <span class="info-val" id="si-cores-phys">–</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key"><span class="material-symbols-outlined">blur_circular</span>Nuclis lògics</span>
+      <span class="info-val" id="si-cores-log">–</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key"><span class="material-symbols-outlined">speed</span>Freq. actual</span>
+      <span class="info-val" id="si-freq">–</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key"><span class="material-symbols-outlined">rocket_launch</span>Freq. màxima</span>
+      <span class="info-val" id="si-freq-max">–</span>
+    </div>
+  </div>
+
+  <div class="sysinfo-card card-wrap" data-card="si-mem">
+    <div class="card-eye-overlay">
+      <span class="material-symbols-outlined eye-icon">visibility</span>
+    </div>
+    <h3><span class="material-symbols-outlined">memory_alt</span> Memòria i entorn</h3>
+    <div class="info-row">
+      <span class="info-key"><span class="material-symbols-outlined">storage</span>RAM total</span>
+      <span class="info-val" id="si-ram-total">–</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key"><span class="material-symbols-outlined">code</span>Python</span>
+      <span class="info-val" id="si-python">–</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Gràfiques d'historial ──────────────────────────────────────────── -->
+<p class="section-title">
+  <span class="material-symbols-outlined">bar_chart</span>
+  Historial de rendiment
+</p>
+<div class="charts-grid">
+
+  <div class="chart-card card-wrap" data-card="chart-cpu">
+    <div class="card-eye-overlay">
+      <span class="material-symbols-outlined eye-icon">visibility</span>
+    </div>
+    <div class="chart-header">
+      <h2><span class="material-symbols-outlined">memory</span> CPU</h2>
+      <div class="range-btns" id="cpu-range-btns">
+        <button class="range-btn active" data-range="minute">1 min</button>
+        <button class="range-btn"        data-range="hour">1 hora</button>
+        <button class="range-btn"        data-range="day">1 dia</button>
+      </div>
+    </div>
+    <canvas id="cpuChart"></canvas>
+  </div>
+
+  <div class="chart-card card-wrap" data-card="chart-ram">
+    <div class="card-eye-overlay">
+      <span class="material-symbols-outlined eye-icon">visibility</span>
+    </div>
+    <div class="chart-header">
+      <h2><span class="material-symbols-outlined">memory_alt</span> RAM</h2>
+      <div class="range-btns" id="ram-range-btns">
+        <button class="range-btn active" data-range="minute">1 min</button>
+        <button class="range-btn"        data-range="hour">1 hora</button>
+        <button class="range-btn"        data-range="day">1 dia</button>
+      </div>
+    </div>
+    <canvas id="ramChart"></canvas>
+  </div>
+
+</div>
+
+<footer>
+  <span class="material-symbols-outlined" style="font-size:0.9rem;vertical-align:middle">sync</span>
+  Actualització automàtica cada 2 s &nbsp;·&nbsp; Servidor Linux &nbsp;·&nbsp; 2026
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="monitor.js"></script>
+</body>
+</html>

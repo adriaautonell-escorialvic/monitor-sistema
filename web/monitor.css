@@ -1,0 +1,366 @@
+/*Mode clar i fosc*/
+:root {
+  --bg:        #0d1117;
+  --bg2:       #161b22;
+  --bg3:       #1c2128;
+  --border:    #30363d;
+  --accent:    #238636;
+  --accent2:   #2ea043;
+  --text:      #e6edf3;
+  --text2:     #8b949e;
+  --cpu-color: #58a6ff;
+  --ram-color: #3fb950;
+  --warn:      #d29922;
+  --danger:    #f85149;
+  --radius:    12px;
+  --shadow:    0 4px 20px rgba(0,0,0,.4);
+}
+
+:root.light {
+  --bg:        #f0f2f5;
+  --bg2:       #ffffff;
+  --bg3:       #e8eaed;
+  --border:    #d0d7de;
+  --accent:    #1a7f37;
+  --accent2:   #2da44e;
+  --text:      #1f2328;
+  --text2:     #656d76;
+  --cpu-color: #0969da;
+  --ram-color: #1a7f37;
+  --warn:      #9a6700;
+  --danger:    #cf222e;
+  --shadow:    0 2px 12px rgba(0,0,0,.12);
+}
+
+/* Reset bàsic: traiem els marges per defecte del navegador i fem que
+   les mides incloguin el padding (comportament més intuitiu). */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 1.5rem;
+  transition: background .3s, color .3s;
+}
+.material-symbols-outlined {
+  vertical-align: middle;
+  user-select: none;
+  font-variation-settings: 'FILL' 1;
+}
+
+/* Capçalera: flex fa que els elements s'alineïn horitzontalment.
+   flex-wrap:wrap fa que, en pantalles petites, baixin a la línia següent. */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+h1 {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+h1 > span { color: var(--accent2); }
+h1 .material-symbols-outlined { font-size: 1.8rem; color: var(--accent2); }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+#status-badge {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: .35rem .85rem;
+  font-size: .78rem;
+  color: var(--text2);
+}
+#dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--text2);
+  transition: background .3s;
+}
+#dot.online  { background: var(--accent2); box-shadow: 0 0 6px var(--accent2); }
+#dot.offline { background: var(--danger); }
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: .35rem .85rem;
+  color: var(--text);
+  font-size: .85rem;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+  white-space: nowrap;
+}
+.icon-btn:hover { background: var(--bg3); border-color: var(--accent2); }
+.icon-btn.active {
+  background: var(--accent);
+  border-color: var(--accent2);
+  color: #fff;
+}
+
+/* Etiquetes petites que separen les seccions del dashboard */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--text2);
+  font-size: .8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin: 2rem 0 .75rem;
+}
+.section-title .material-symbols-outlined { font-size: 1rem; }
+
+/* La graella de targetes s'adapta sola: auto-fit + minmax fa que posi tantes
+   columnes com capin, amb un mínim de 200px cadascuna. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+  transition: background .3s, border-color .2s;
+}
+.card-label {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  color: var(--text2);
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: .6rem;
+}
+.card-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: .25rem;
+}
+.card-sub {
+  color: var(--text2);
+  font-size: .75rem;
+  margin-bottom: .75rem;
+}
+/* La barra de progrés: el fons és fix i el farciment s'anima suaument.
+   JavaScript li canvia l'amplada i el color segons el valor. */
+.bar-wrap {
+  background: var(--bg3);
+  border-radius: 999px;
+  height: 6px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent2);
+  transition: width .5s ease, background .5s;
+}
+
+/* Targetes d'informació del sistema: mateixa idea que .grid però
+   amb mínim 280px perquè les files de clau-valor necessiten més espai. */
+.sysinfo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.sysinfo-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+}
+.sysinfo-card h3 {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .9rem;
+  color: var(--text2);
+  margin-bottom: .85rem;
+  padding-bottom: .6rem;
+  border-bottom: 1px solid var(--border);
+}
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: .5rem;
+  padding: .35rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: .82rem;
+}
+.info-row:last-child { border-bottom: none; }
+.info-key {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  color: var(--text2);
+  flex-shrink: 0;
+}
+.info-key .material-symbols-outlined { font-size: .85rem; }
+.info-val {
+  color: var(--text);
+  font-weight: 500;
+  text-align: right;
+  word-break: break-word;
+}
+
+/* Gràfiques: mínim 340px perquè Chart.js necessita espai per dibuixar. */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1rem;
+}
+.chart-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+}
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: 1rem;
+}
+.chart-header h2 {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .95rem;
+  color: var(--text2);
+}
+.range-btns { display: flex; gap: .35rem; }
+.range-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: .2rem .55rem;
+  font-size: .72rem;
+  color: var(--text2);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.range-btn:hover  { background: var(--bg); }
+.range-btn.active { background: var(--accent); color: #fff; border-color: var(--accent2); }
+
+/* Peu de pàgina: text discret al centre */
+footer {
+  margin-top: 2.5rem;
+  text-align: center;
+  color: var(--text2);
+  font-size: .75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Mode configuració: quan l'usuari clica "Configuració", cada targeta
+   mostra una icona d'ull al mig. Clicar l'ull amaga o mostra la targeta.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Totes les targetes necessiten position:relative perquè l'overlay
+   es posicioni respecte a elles i no respecte a la pàgina sencera. */
+.card-wrap {
+  position: relative;
+  transition: opacity .25s;
+}
+
+/* L'overlay ocupa tota la targeta però és invisible per defecte.
+   Quan activem el mode config, CSS el fa visible automàticament. */
+.card-eye-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background .15s;
+}
+
+/* En mode configuració mostrem l'overlay translúcid sobre cada targeta */
+body.config-mode .card-wrap .card-eye-overlay {
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+}
+:root.light body.config-mode .card-wrap .card-eye-overlay {
+  background: rgba(200, 210, 220, 0.55);
+}
+body.config-mode .card-wrap .card-eye-overlay:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+:root.light body.config-mode .card-wrap .card-eye-overlay:hover {
+  background: rgba(180, 190, 200, 0.75);
+}
+
+/* Icona ull */
+.card-eye-overlay .eye-icon {
+  font-size: 2.2rem;
+  color: rgba(255,255,255,0.9);
+  pointer-events: none;
+  transition: transform .15s;
+}
+:root.light .card-eye-overlay .eye-icon {
+  color: rgba(20,30,50,0.75);
+}
+body.config-mode .card-wrap .card-eye-overlay:hover .eye-icon {
+  transform: scale(1.2);
+}
+
+/* Fora del mode config, les targetes amagades desapareixen del layout */
+.card-wrap.card-hidden {
+  display: none;
+}
+/* En mode config les tornem a mostrar (translúcides) perquè l'usuari
+   les pugui tornar a activar clicant l'ull. */
+body.config-mode .card-wrap.card-hidden {
+  display: revert;
+  opacity: 0.35;
+}
+/* L'overlay de les targetes amagades és vermell per indicar que estan desactivades */
+body.config-mode .card-wrap.card-hidden .card-eye-overlay {
+  background: rgba(200, 50, 50, 0.35);
+}
+body.config-mode .card-wrap.card-hidden .card-eye-overlay:hover {
+  background: rgba(200, 50, 50, 0.55);
+}
+
+/* En mode config posem una vora puntejada perquè l'usuari
+   sàpiga visualment que està en mode d'edició. */
+body.config-mode .card-wrap {
+  outline: 2px dashed var(--border);
+  outline-offset: 2px;
+}
