@@ -1,0 +1,25 @@
+# Entorn virtual Python
+venv/
+.venv/
+env/
+
+# Fitxers compilats Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Fitxers de distribució/empaquetament
+dist/
+build/
+*.egg-info/
+
+# Variables d'entorn
+.env
+
+# Fitxers del sistema
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
